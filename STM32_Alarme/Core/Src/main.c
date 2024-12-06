@@ -97,7 +97,7 @@ int main(void)
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
 
-
+// test de commit
 
   /* USER CODE END 2 */
 
@@ -165,11 +165,11 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
   if(GPIO_Pin == GPIO_PIN_0) {
 	  // Start timer
 	  HAL_TIM_Base_Start(&htim1);
-	  GPIO_InitStruct->Mode =
+	  //GPIO_InitStruct->Mode =
     // TODO : implémenter la fonction de callback
 	// démarre le timer
-  } else {
-      __NOP();
+  //} else {
+  //    __NOP();
   }
 }
 
