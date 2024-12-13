@@ -57,7 +57,12 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+void setDutyCycle(uint8_t duty_cycle)
+{
+	if (duty_cycle > 50) duty_cycle = 50;  // limite à %
+	uint32_t CCR_value = (uint32_t) (htim2.Init.Period * duty_cycle) / 100;
+	TIM2->CCR2=CCR_value;
+}
 /* USER CODE END 0 */
 
 /**
@@ -95,6 +100,9 @@ int main(void)
   MX_USB_OTG_FS_PCD_Init();
   MX_CAN1_Init();
   MX_TIM1_Init();
+  MX_TIM2_Init();
+
+  HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_2); // Démarrer le Timer de la PWM
   /* USER CODE BEGIN 2 */
 
 // test de commit
@@ -171,8 +179,19 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
   //} else {
   //    __NOP();
   }
-}
 
+  if (GPIO_Pin == GPIO_PIN_13) // appui sur bouton USER
+  {
+      uint8_t duty_cycle = 0;
+
+      if (duty_cycle < 50) // limite 50%
+      {
+          duty_cycle += 10;
+      }
+
+      setDutyCycle(duty_cycle); // augmentation du rapport cyclique de 10%
+  }
+}
 /* USER CODE END 4 */
 
 /**
